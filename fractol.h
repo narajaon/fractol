@@ -6,14 +6,14 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 14:20:30 by narajaon          #+#    #+#             */
-/*   Updated: 2017/05/31 16:59:07 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/05/31 19:19:05 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 #define FRACTOL_H
-//# include <mlx.h>
-# include "minilibx_macos/mlx.h"
+# include <mlx.h>
+//# include "minilibx_macos/mlx.h"
 # include <stdlib.h>
 # include "./libft/libft.h"
 # include <stdio.h>
@@ -31,6 +31,8 @@ typedef struct s_pix
 	int		z_i;
 	int		im;
 	int		col;
+	float	zone_x[2];
+	float	zone_y[2];
 }				t_pix;
 
 typedef struct s_img

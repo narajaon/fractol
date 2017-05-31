@@ -6,7 +6,7 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 13:50:01 by narajaon          #+#    #+#             */
-/*   Updated: 2017/05/31 18:00:24 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/05/31 19:39:27 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,39 @@ void	init_struct(t_pix *pix)
 	pix->z_r = 0;
 	pix->z_i = 0;
 	pix->im = 0;
+	pix->zone_x[0] = -2.1;
+	pix->zone_x[1] = 0.6;
+	pix->zone_y[0] = -1.2;
+	pix->zone_x[1] = 1.2;
+}
+
+void	get_col(t_pix *pix, t_env *e, int c[2])
+{
+	float	img[2];
+	int		tmp;
+
+	img[0] = (pix->zone_x[1] - pix->zone_x[0]) * e->zoom;
+	img[1] = (pix->zone_y[1] - pix->zone_y[0]) * e->zoom;
+	while (pix->z_r * pix->z_r + pix->z_i * pix->z_i < 4 && pix->im < MAX_ITER)
+	{
+		tmp = pix->z_r;
+		pix->z_r = pix->z_r * pix->z_r - pix->z_i * pix->z_i + c[0];
+		pix->z_i = 2 * pix->z_i * tmp + c[1];
+		pix->im++;
+	}
+	if (pix->im == MAX_ITER)
+		e->img.img[c[0] + c[1]] = pix->col;
 }
 
 void	check_pix(t_pix *pix, t_env *e)
 {
-	int		c_r;
-	int		c_i;
+	int		c[2];
 	int		tmp;
 
-	c_r = pix->x;
-	c_i = pix->y * WIN_X;
 	init_struct(pix);
-	while (pix->z_r * pix->z_r + pix->z_i * pix->z_i < 4 && pix->im < MAX_ITER)
-	{
-		tmp = pix->z_r;
-		pix->z_r = pix->z_r * pix->z_r - pix->z_i * pix->z_i + c_r;
-		pix->z_i = 2 * pix->z_i * tmp + c_i;
-		pix->im++;
-	}
-	if (pix->im == MAX_ITER)
-		e->img.img[c_r + c_i] = pix->col;
+	c[0] = pix->x / e->zoom + pix->zone_x[0];
+	c[1] = (pix->y * WIN_X) / e->zoom + pix->zone_y[0];
+	get_col(pix, e, c);
 }
 
 void	print_mandel(t_pix *pix, t_env *e)
