@@ -6,33 +6,38 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 14:20:30 by narajaon          #+#    #+#             */
-/*   Updated: 2017/05/31 19:19:05 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/06/01 18:26:46 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 #define FRACTOL_H
-# include <mlx.h>
-//# include "minilibx_macos/mlx.h"
+//# include <mlx.h>
+# include "minilibx_macos/mlx.h"
 # include <stdlib.h>
 # include "./libft/libft.h"
 # include <stdio.h>
 
-# define MAX_ITER 50
-# define WIN_X 1500
-# define WIN_Y 1000
+# define WIN_X 1000
+# define WIN_Y 800
 
 typedef struct s_pix
 {
-	int		x;
-	int		y;
-	int		c;
-	int		z_r;
-	int		z_i;
-	int		im;
-	int		col;
-	float	zone_x[2];
-	float	zone_y[2];
+	unsigned int	x;
+	unsigned int	y;
+	unsigned int	im_x;
+	unsigned int	im_y;
+	double			x1;
+	double			x2;
+	double			y1;
+	double			y2;
+	double			c_r;
+	double			c_i;
+	double			z_r;
+	double			z_i;
+	double			i;
+	int				col;
+
 }				t_pix;
 
 typedef struct s_img
@@ -46,11 +51,13 @@ typedef struct s_img
 
 typedef struct s_env
 {
-	void	*mlx;
-	void	*win;
-	void	*key;
-	t_img	img;
-	int		zoom;
+	void				*mlx;
+	void				*win;
+	void				*key;
+	void				*mouse;
+	t_img				img;
+	unsigned int		zoom;
+	unsigned int		iter_max;
 }				t_env;
 
 #endif

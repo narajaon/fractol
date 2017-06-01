@@ -6,7 +6,7 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 13:50:01 by narajaon          #+#    #+#             */
-/*   Updated: 2017/06/01 19:35:02 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/06/01 14:14:20 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		error_msg(int error)
 	if (error == 1)
 	{
 		ft_putstr_fd("Usage : ./fractol <value>\n1- Mandelbrot\
-				\n2- Julia\n3- Burning Ship\n", 2);
+				\n2- Julia\n3- Burning Ship\n", 1);
 		return (1);
 	}
 	if (error == 2)
@@ -34,7 +34,7 @@ int		error_msg(int error)
 	return (0);
 }
 
-int		key_hook(int keycode, void *param)
+int		key_fun(int keycode, void *param)
 {
 	printf("key nb %d\n", keycode);
 	if (keycode == 53)
@@ -42,56 +42,53 @@ int		key_hook(int keycode, void *param)
 	return (0);
 }
 
-int		mouse_hook(int boutton, int x, int y, void *param)
+void	init_zone(t_pix *pix)
 {
-	printf("mouse boutton %d x %d y %d\n", boutton, x, y);
-	return (0);
+	pix->zone_x[0] = -2.1;
+	pix->zone_x[1] = 0.6;
+	pix->zone_y[0] = -1.2;
+	pix->zone_x[1] = 1.2;
 }
 
-void	check_pix(t_pix *pix, t_env *e)
+void	get_col(t_pix *pix, t_env *e)
 {
-	double		tmp;
-	int			iter_max;
+	int			tmp;
+	double		c[2];
 
-	pix->c_r = pix->x / (double)(e->zoom) + pix->x1;
-	pix->c_i = pix->y / (double)(e->zoom) + pix->y1;
+	c[0] = pix->x / e->zoom + pix->zone_x[0];
+	c[1] = (pix->y * WIN_X) / e->zoom + pix->zone_y[0];
 	pix->z_r = 0;
 	pix->z_i = 0;
-	pix->i = 0;
-	iter_max = e->iter_max;
-	while (pix->z_r * pix->z_r + pix->z_i * pix->z_i < 4 && pix->i < iter_max)
+	pix->im = 0;
+	while ((pix->z_r * pix->z_r + pix->z_i * pix->z_i) < 4 && pix->im < MAX_ITER)
 	{
 		tmp = pix->z_r;
-		pix->z_r = pix->z_r * pix->z_r - pix->z_i * pix->z_i + pix->c_r;
-		pix->z_i = 2 * pix->z_i * tmp + pix->c_i;
-		++pix->i;
+		pix->z_r = pix->z_r * pix->z_r - pix->z_i * pix->z_i + c[0];
+		pix->z_i = 2 * pix->z_i * tmp + c[1];
+		pix->im++;
 	}
-	if (pix->i == iter_max)
-		e->img.img[pix->x * WIN_X + pix->y] = 0xFFFFFF;
+	if (pix->im == MAX_ITER)
+		e->img.img[pix->y * WIN_X + pix->x] = pix->col;
 	else
-		e->img.img[pix->x * WIN_X + pix->y] = pix->col * pix->i * 255 / iter_max;
+		e->img.img[pix->y * WIN_X + pix->x] = 0xFF00FF;
+
 }
 
-void	init_mandel(t_pix *pix, t_env *e)
+void	print_mandel(t_pix *pix, t_env *e)
 {
-	pix->x1 = -2.1;
-	pix->x2 = 0.6;
-	pix->y1 = -1.2;
-	pix->y2 = 1.2;
-	pix->im_x = (unsigned int)((pix->x2 - pix->x1) * e->zoom);
-	pix->im_y = (unsigned int)((pix->y2 - pix->y1) * e->zoom);
-}
+	unsigned int	img[2];
 
-void	print_mandel2(t_pix *pix, t_env *e)
-{
-	init_mandel(pix, e);
+	init_zone(pix);
+	img[0] = (pix->zone_x[1] - pix->zone_x[0]) * e->zoom;
+	img[1] = (pix->zone_y[1] - pix->zone_y[0]) * e->zoom;
+	printf("%d %d %d\n", img[0], img[1], e->zoom);
 	pix->x = 0;
-	while (pix->x < pix->im_x)
+	while (pix->x < img[0])
 	{
 		pix->y = 0;
-		while (pix->y < pix->im_y)
+		while (pix->y < img[1])
 		{
-			check_pix(pix, e);
+			get_col(pix, e);
 			pix->y++;
 		}
 		pix->x++;
@@ -101,17 +98,10 @@ void	print_mandel2(t_pix *pix, t_env *e)
 int		do_mandel(t_env *e)
 {
 	t_pix	pix;
-	int		i;
-	int		key;
 
-	i = 0;
-	key = 0;
-	e->zoom = 250;
-	e->iter_max = 50;
-	pix.col = 0x0000FF;
-	pix.x = 0;
-	pix.y = 0;
-	print_mandel2(&pix, e);
+	pix.col = 0xFFFFFF;
+	e->zoom = 400;
+	print_mandel(&pix, e);
 	mlx_put_image_to_window(e->mlx, e->win, e->img.img_ptr, 0, 0);
 	return (0);
 }
@@ -128,8 +118,7 @@ int		main(int ac, char **av)
 	e.img.img = (int *)mlx_get_data_addr(e.img.img_ptr, &e.img.bpp, &e.img.size_line,
 			&e.img.endian);
 	printf("bpp %d size %d endian %d\n", e.img.bpp, e.img.size_line, e.img.endian);
-	mlx_key_hook(e.win, &key_hook, e.key);
-	mlx_mouse_hook(e.win, &mouse_hook, e.mouse);
+	mlx_key_hook(e.win, &key_fun, e.key);
 	do_mandel(&e);
 	mlx_loop(e.mlx);
 	return (0);
