@@ -6,7 +6,7 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 14:20:30 by narajaon          #+#    #+#             */
-/*   Updated: 2017/06/01 18:26:46 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/06/04 16:13:44 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
 # include <stdlib.h>
 # include "./libft/libft.h"
 # include <stdio.h>
+# include <math.h>
 
-# define WIN_X 1000
-# define WIN_Y 800
+# define WIN_X 270
+# define WIN_Y 240
 
 typedef struct s_pix
 {
 	unsigned int	x;
 	unsigned int	y;
-	unsigned int	im_x;
-	unsigned int	im_y;
+	double			im_x;
+	double			im_y;
 	double			x1;
 	double			x2;
 	double			y1;
@@ -56,8 +57,14 @@ typedef struct s_env
 	void				*key;
 	void				*mouse;
 	t_img				img;
-	unsigned int		zoom;
+	double				zoom;
 	unsigned int		iter_max;
+	t_pix				pix;
+	double				h;
+	double				w;
+	double				pad_x;
+	double				pad_y;
+	double				pad;
 }				t_env;
 
 #endif
