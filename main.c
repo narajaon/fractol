@@ -6,7 +6,7 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 13:50:01 by narajaon          #+#    #+#             */
-/*   Updated: 2017/06/04 17:00:47 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/06/04 17:02:53 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,24 @@ void	zoom_mandel(t_env *e, int x, int y)
 	e->pix.y2 *= e->pad;
 	e->pad_x *= 0.95;
 	e->pad_y *= 0.95;
+	/* x2 grandit quand il devient negatif!!! Meme chose pour y2 je suppose*/
 	if (x > cent_x)
 	{
-		//e->pix.x1 /= 0.95;
 		e->pix.x1 += e->pad_x;
 		e->pix.x2 += e->pad_x;
 	}
 	else if (x < cent_x)
 	{
-		//e->pix.x2 /= 0.95;
 		e->pix.x1 -= e->pad_x;
 		e->pix.x2 -= e->pad_x;
 	}
 	if (y > cent_y)
 	{
-		//e->pix.y1 /= 0.95;
 		e->pix.y1 += e->pad_y;
 		e->pix.y2 += e->pad_y;
 	}
 	else if (y < cent_y)
 	{
-		//e->pix.y2 /= 0.95;
 		e->pix.y1 -= e->pad_y;
 		e->pix.y2 -= e->pad_y;
 	}
