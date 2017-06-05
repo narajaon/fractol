@@ -6,7 +6,7 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 14:20:30 by narajaon          #+#    #+#             */
-/*   Updated: 2017/06/04 16:13:44 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/06/05 18:59:09 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,14 @@ typedef struct s_env
 	double				pad_x;
 	double				pad_y;
 	double				pad;
+	double				wid_x;
+	double				wid_y;
 }				t_env;
+
+int		do_mandel(t_env *e);
+int		mouse_hook(int boutton, int x, int y, t_env *e);
+int		key_hook(int keycode, t_env *e);
+void	zoom_fract(t_env *e, double x, double y);
+int		change_col(int col);
 
 #endif
