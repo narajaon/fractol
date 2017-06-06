@@ -24,8 +24,6 @@
 
 typedef struct s_pix
 {
-	unsigned int	x;
-	unsigned int	y;
 	double			im_x;
 	double			im_y;
 	double			x1;
@@ -37,6 +35,8 @@ typedef struct s_pix
 	double			z_r;
 	double			z_i;
 	double			i;
+	unsigned int	x;
+	unsigned int	y;
 	int				col;
 
 }				t_pix;
@@ -57,9 +57,8 @@ typedef struct s_env
 	void				*key;
 	void				*mouse;
 	t_img				img;
-	double				zoom;
-	unsigned int		iter_max;
 	t_pix				pix;
+	double				zoom;
 	double				h;
 	double				w;
 	double				pad_x;
@@ -67,12 +66,18 @@ typedef struct s_env
 	double				pad;
 	double				wid_x;
 	double				wid_y;
+	unsigned int		iter_max;
 }				t_env;
 
 int		do_mandel(t_env *e);
 int		mouse_hook(int boutton, int x, int y, t_env *e);
 int		key_hook(int keycode, t_env *e);
-void	zoom_fract(t_env *e, double x, double y);
 int		change_col(int col);
+int		error_msg(int error);
+void	zoom_fract(t_env *e, double x, double y);
+void	zoom_fract(t_env *e, double x, double y);
+void	check_pix(t_pix *pix, t_env *e);
+void	init_mandel(t_env *e);
+void	print_fract(t_env *e);
 
 #endif
