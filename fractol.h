@@ -59,25 +59,26 @@ typedef struct s_env
 	t_img				img;
 	t_pix				pix;
 	double				zoom;
-	double				h;
-	double				w;
-	double				pad_x;
-	double				pad_y;
 	double				pad;
 	double				wid_x;
 	double				wid_y;
+	double				i_jul;
 	unsigned int		iter_max;
+	int					fract;
 }				t_env;
 
 int		do_mandel(t_env *e);
+int		do_julia(t_env *e);
 int		mouse_hook(int boutton, int x, int y, t_env *e);
 int		key_hook(int keycode, t_env *e);
 int		change_col(int col);
 int		error_msg(int error);
 void	zoom_fract(t_env *e, double x, double y);
 void	zoom_fract(t_env *e, double x, double y);
-void	check_pix(t_pix *pix, t_env *e);
+void	check_mandel(t_pix *pix, t_env *e);
+void	check_julia(t_pix *pix, t_env *e);
 void	init_mandel(t_env *e);
+void	init_julia(t_env *e);
 void	print_fract(t_env *e);
 
 #endif

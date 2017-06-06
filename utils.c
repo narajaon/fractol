@@ -53,34 +53,12 @@ void	print_fract(t_env *e)
 		e->pix.y = 0;
 		while (e->pix.y < e->pix.im_y)
 		{
-			check_pix(&e->pix, e);
+			if (e->fract == 1)
+				check_mandel(&e->pix, e);
+			else if (e->fract == 2)
+				check_julia(&e->pix, e);
 			e->pix.y++;
 		}
 		e->pix.x++;
 	}
-}
-
-void	check_pix(t_pix *pix, t_env *e)
-{
-	double		tmp;
-	int			iter_max;
-
-	e->pix.c_r = e->pix.x / (double)(e->zoom) + e->pix.x1;
-	e->pix.c_i = e->pix.y / (double)(e->zoom) + e->pix.y1;
-	e->pix.z_r = 0;
-	e->pix.z_i = 0;
-	e->pix.i = 0;
-	iter_max = e->iter_max;
-	while (e->pix.z_r * e->pix.z_r + e->pix.z_i * e->pix.z_i < 4 && e->pix.i < iter_max)
-	{
-		tmp = e->pix.z_r;
-		e->pix.z_r = e->pix.z_r * e->pix.z_r - e->pix.z_i * e->pix.z_i + e->pix.c_r;
-		e->pix.z_i = 2 * e->pix.z_i * tmp + e->pix.c_i;
-		++e->pix.i;
-	}
-	if (e->pix.i == iter_max)
-		e->img.img[e->pix.y * WIN_X + e->pix.x] = 0x00FFFFFF;
-	else
-		e->img.img[e->pix.y * WIN_X + e->pix.x] = 
-			(int)(e->pix.col * e->pix.i * e->pix.col / iter_max) & (0x00FFFFFF);
 }

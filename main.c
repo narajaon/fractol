@@ -23,13 +23,20 @@ int		key_hook(int keycode, t_env *e)
 	}
 	if (keycode == 15)
 	{
-		init_mandel(e);
+		(e->fract == 1) ? init_mandel(e) : 0;
+		(e->fract == 2) ? init_julia(e) : 0;
 		print_fract(e);
 		mlx_put_image_to_window(e->mlx, e->win, e->img.img_ptr, 0, 0);
 	}
 	if (keycode == 8)
 	{
 		e->pix.col = change_col(e->pix.col);
+		print_fract(e);
+		mlx_put_image_to_window(e->mlx, e->win, e->img.img_ptr, 0, 0);
+	}
+	if ((keycode == 126 || keycode == 125) && e->fract == 2)
+	{
+		e->i_jul *= (keycode == 126) ? 1.03 : 0.97;
 		print_fract(e);
 		mlx_put_image_to_window(e->mlx, e->win, e->img.img_ptr, 0, 0);
 	}
@@ -57,19 +64,20 @@ int		mouse_hook(int boutton, int x, int y, t_env *e)
 int		main(int ac, char **av)
 {
 	t_env	e;
-	int		fract;
 
 	if (ac < 2)
 		exit(error_msg(1));
-	fract = ft_atoi(av[1]);
+	e.fract = ft_atoi(av[1]);
+	if (e.fract == 4)
+		exit(error_msg(4));
 	e.mlx = mlx_init();
 	e.win = mlx_new_window(e.mlx, WIN_X, WIN_Y, "Displaying Fract'ol");
 	e.img.img_ptr = mlx_new_image(e.mlx, WIN_X, WIN_Y);
 	e.img.img = (int *)mlx_get_data_addr(e.img.img_ptr,
 			&e.img.bpp, &e.img.size_line, &e.img.endian);
-	if (fract == 4)
-		exit(error_msg(4));
-	do_mandel(&e);
-	//do_julia(&e);
+	if (e.fract == 1)
+		do_mandel(&e);
+	else if (e.fract == 2)
+		do_julia(&e);
 	return (0);
 }
