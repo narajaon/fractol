@@ -6,7 +6,7 @@
 /*   By: narajaon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/30 14:20:30 by narajaon          #+#    #+#             */
-/*   Updated: 2017/06/06 17:41:10 by narajaon         ###   ########.fr       */
+/*   Updated: 2017/06/11 13:09:42 by narajaon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ typedef struct		s_env
 	void			*win;
 	void			*key;
 	void			*mouse;
-	t_img			img;
 	t_pix			pix;
+	t_img			img;
 	double			zoom;
 	double			pad;
 	double			wid_x;
